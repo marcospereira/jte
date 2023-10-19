@@ -68,6 +68,9 @@ plugins:
   - search
   - mkdocs-pom-parser-plugin:
       path: pom.xml
+  - git-revision-date-localized:
+      enable_creation_date: true
+      fallback_to_build_date: true
 
 nav:
   - "Home":
