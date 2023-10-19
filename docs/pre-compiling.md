@@ -17,7 +17,7 @@ if (isDeveloperMachine()) {
 
 To do this, you must create a `gg.jte.TemplateEngine` with the `createPrecompiled` factory method and specify where compiled template classes are located. Currently, there are two options available to do this.
 
-## Using a directory on your server (recommended)
+## <small class="md-tag">:bell: recommended</small> Using a directory on your server
 
 You must deploy the precompiled templates to your server when using this method.
 

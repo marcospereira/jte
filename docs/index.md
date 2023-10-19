@@ -12,20 +12,16 @@ description: jte is a secure, lightweight, and fast template engine for Java and
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/casid/jte/master/LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/gg.jte/jte.svg)](http://mvnrepository.com/artifact/gg.jte/jte)
 
-!!! tip "jte 3 is here!"
-
-    Check out the [release notes](https://github.com/casid/jte/releases/tag/3.0.0) for exciting new features, improved performance, and streamlined dependencies.
-
 ## Features
 
 <div class="grid cards" markdown>
 
-- **Intuitive and easy syntax**, you'll rarely need to check these docs.
-- **Write plain Java or Kotlin for expressions**. You don't need to learn yet another expression language
-- **Context-sensitive [HTML escaping](html-rendering.md#html-escaping)** at compile time
-- **[IntelliJ plugin][intellij-plugin]** with completion and refactoring support
-- **[Hot reloading](hot-reloading.md)** of templates during development
-- **Blazing fast** execution ([see benchmarks](#performance))
+- :heart_eyes: **Intuitive and easy syntax**, you'll rarely need to check these docs.
+- :palms_up_together: **Write plain Java or Kotlin for expressions**. You don't need to learn yet another expression language
+- :simple-html5: **Context-sensitive [HTML escaping](html-rendering.md#html-escaping)** at compile time
+- :simple-jetbrains: **[IntelliJ plugin][intellij-plugin]** with completion and refactoring support
+- :hot_pepper: **[Hot reloading](hot-reloading.md)** of templates during development
+- :rocket: **Blazing fast** execution ([see benchmarks](#performance))
 
 </div>
 
