@@ -47,6 +47,10 @@ jte is available on [Maven Central][maven-central]:
 
 No further dependencies are required! Check out the [syntax documentation](syntax.md) and have fun with jte.
 
+!!! tip "Java 17+"
+
+    Starting from [jte 3](https://github.com/casid/jte/releases/tag/3.0.0), support for Java versions below 17 has been discontinued. However, users who are still on older Java versions can continue to use [jte 2](https://github.com/casid/jte/releases/tag/2.3.2), which will be maintained with necessary security patches as long as required.
+
 ## IntelliJ Plugin
 
 jte gives you the same productive, typesafe experience you're used to from writing Java or Kotlin. Here is a quick demo of the [IntelliJ jte plugin][intellij-plugin]:
