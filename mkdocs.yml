@@ -80,6 +80,8 @@ plugins:
 nav:
   - "Home":
     - "Getting Started": index.md
+    - "Issue tracking": https://github.com/casid/jte/issues
+    - "Releases": https://github.com/casid/jte/releases
   - "Templates":
     - "Rendering a Template": rendering-a-template.md
     - "Templates Syntax": syntax.md
