@@ -32,11 +32,7 @@ jte is available on [Maven Central][maven-central]:
 === "Maven"
 
     ```xml linenums="1" title="in your pom.xml"
-    <dependency>
-        <groupId>{{ POM_GROUP_ID }}</groupId>
-        <artifactId>jte</artifactId>
-        <version>{{ POM_VERSION }}</version>
-    </dependency>
+    --8<-- "docs/samples/pom.xml:maven-java-dep"
     ```
 
 === "Gradle"
@@ -51,6 +47,22 @@ No further dependencies are required! Check out the [syntax documentation](synta
 
     Starting from [jte 3](https://github.com/casid/jte/releases/tag/3.0.0), support for Java versions below 17 has been discontinued. However, users who are still on older Java versions can continue to use [jte 2](https://github.com/casid/jte/releases/tag/2.3.2), which will be maintained with necessary security patches as long as required.
 
+??? info "Kotlin Dependency"
+    
+    If your project uses Kotlin, you must add an extra dependency:
+
+    === "Maven"
+
+        ```xml linenums="1" title="in your pom.xml"
+        --8<-- "docs/samples/pom.xml:maven-kotlin-dep"
+        ```
+
+    === "Gradle"
+
+        ```groovy linenums="1" title="in your build.gradle"
+        implementation("{{ POM_GROUP_ID }}:jte-kotlin:{{ POM_VERSION }}")
+        ```
+
 ## IntelliJ Plugin
 
 jte gives you the same productive, typesafe experience you're used to from writing Java or Kotlin. Here is a quick demo of the [IntelliJ jte plugin][intellij-plugin]:
@@ -64,39 +76,13 @@ Here is a small jte template `example.jte`:
 === "Java"
 
     ```html linenums="1"
-    @import org.example.Page
-
-    @param Page page
-
-    <head>
-        @if(page.getDescription() != null)
-            <meta name="description" content="${page.getDescription()}">
-        @endif
-        <title>${page.getTitle()}</title>
-    </head>
-    <body>
-        <h1>${page.getTitle()}</h1>
-        <p>Welcome to my example page!</p>
-    </body>
+    --8<-- "docs/samples/src/main/jte/jtemplates/example.jte"
     ```
 
 === "Kotlin"
 
     ```html linenums="1"
-    @import org.example.Page
-
-    @param page: Page
-
-    <head>
-        @if(page.description != null)
-            <meta name="description" content="${page.description}">
-        @endif
-        <title>${page.title}</title>
-    </head>
-    <body>
-        <h1>${page.title}</h1>
-        <p>Welcome to my example page!</p>
-    </body>
+    --8<-- "docs/samples/src/main/jte/ktemplates/example.kte"
     ```
 
 So what is going on here?
@@ -111,27 +97,21 @@ To render this template, an instance of `gg.jte.TemplateEngine` is required. Typ
 === "Java"
 
     ```java linenums="1"
-    import gg.jte.CodeResolver;
-    import gg.jte.TemplateEngine;
-    import gg.jte.resolve.DirectoryCodeResolver;
+    --8<-- "docs/samples/src/main/java/gg/jte/docs/samples/JavaTemplateEngineSample.java:imports"
 
     ...
 
-    CodeResolver codeResolver = new DirectoryCodeResolver(Path.of("jte")); // This is the directory where your .jte files are located.
-    TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html); // Two choices: Plain or Html
+    --8<-- "docs/samples/src/main/java/gg/jte/docs/samples/JavaTemplateEngineSample.java:createTemplateEngine"
     ```
 
 === "Kotlin"
 
     ```kotlin linenums="1"
-    import gg.jte.CodeResolver
-    import gg.jte.TemplateEngine
-    import gg.jte.resolve.DirectoryCodeResolver
+    --8<-- "docs/samples/src/main/kotlin/gg/jte/docs/samples/KotlinTemplateEngineSample.kt:imports"
 
     ...
 
-    val codeResolver = DirectoryCodeResolver(Path.of("kte")) // This is the directory where your .kte files are located.
-    val templateEngine = TemplateEngine.create(codeResolver, ContentType.Html) // Two choices: Plain or Html
+    --8<-- "docs/samples/src/main/kotlin/gg/jte/docs/samples/KotlinTemplateEngineSample.kt:createTemplateEngine"
     ```
 
     The content type passed to the engine determines how user output will be escaped. If you render HTML files, `ContentType.Html` is highly recommended. This enables the engine to analyze HTML templates at compile time and perform context sensitive output escaping of user data to prevent you from [XSS attacks](https://owasp.org/www-community/attacks/xss/).
@@ -141,27 +121,21 @@ With the `gg.jte.TemplateEngine` ready, templates are rendered like this:
 === "Java"
 
     ```java linenums="1"
-    import gg.jte.TemplateOutput;
-    import gg.jte.output.StringOutput;
+    --8<-- "docs/samples/src/main/java/gg/jte/docs/samples/JavaTemplateEngineSample.java:imports-render"
 
     ...
 
-    TemplateOutput output = new StringOutput();
-    templateEngine.render("example.jte", page, output);
-    System.out.println(output);
+    --8<-- "docs/samples/src/main/java/gg/jte/docs/samples/JavaTemplateEngineSample.java:renderTemplate"
     ```
 
 === "Kotlin"
 
     ```kotlin linenums="1"
-    import gg.jte.TemplateOutput
-    import gg.jte.output.StringOutput
+    --8<-- "docs/samples/src/main/kotlin/gg/jte/docs/samples/KotlinTemplateEngineSample.kt:imports-render"
 
     ...
 
-    val output = StringOutput()
-    templateEngine.render("example.kte", page, output)
-    println(output)
+    --8<-- "docs/samples/src/main/kotlin/gg/jte/docs/samples/KotlinTemplateEngineSample.kt:renderTemplate"
     ```
 
 !!! info "`TemplateOutput` implementations"
