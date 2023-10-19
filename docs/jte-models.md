@@ -177,4 +177,27 @@ templates.helloWorld("Hi!").render(output);
 
 `StaticTemplates` is built so that it calls directly to jte generated render classes, with no reflection used. **This is good for a production build**.
 
-`DynamicTemplates` delegates to a `TemplateEngine`, so it can be set up to hot-reload templates. **This is good for development**. You will still have to rerun the build if @params of a template are changed.
+`DynamicTemplates` delegates to a `TemplateEngine`, so it can be set up to hot-reload templates. **This is good for development**. You will still have to rerun the build if `@params` of a template are changed.
+
+=== "Java"
+
+    ```java
+    public Templates createTemplates() {
+        if (isDeveloperEnvironment()) {
+            return new DynamicTemplates(getTemplateEngine());
+        }
+        // If it is not dev env, then use static templates
+        return new StaticTemplates();
+    }
+    ```
+
+=== "Kotlin"
+
+    ```kotlin
+    fun createTemplates(): Templates = if(isDeveloperEnvironment()) {
+            DynamicTemplates(templateEngine)
+        } else {
+            // If it is not dev env, then use static templates
+            StaticTemplates()
+        }
+    ```
