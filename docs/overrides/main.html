@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block announce %}
+  <span class="twemoji paper-plane">
+    {% include ".icons/fontawesome/solid/paper-plane.svg" %}
+  </span>
+  <strong>jte {{ config.pom_env_vars.POM_VERSION }} is here!</strong>
+  Check the <a href="https://github.com/casid/jte/releases/tag/{{ config.pom_env_vars.POM_VERSION }}">Release Notes</a>
+  for more details.
+{% endblock %}

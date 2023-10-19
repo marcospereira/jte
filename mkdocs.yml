@@ -3,11 +3,13 @@ site_description: "Secure and speedy templates for Java and Kotlin"
 repo_url: https://github.com/casid/jte/
 site_url: https://jte.gg/
 theme:
+  name: material
+  custom_dir: docs/overrides
   icon:
     repo: fontawesome/brands/github
   language: en 
-  name: material
   features:
+    - announce.dismiss
     - navigation.top
     - navigation.sections
     - navigation.expand
