@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java_version: [17]
+        java_version: [17, 21]
         os: [windows-2022, macOS-latest, ubuntu-latest]
 
     steps:
@@ -85,13 +85,18 @@ jobs:
     # https://docs.github.com/en/actions/using-jobs/using-conditions-to-control-job-execution#example-only-run-job-for-specific-repository
     if: github.repository == 'casid/jte'
     runs-on: ubuntu-latest
-    
+
+    strategy:
+      fail-fast: false
+      matrix:
+        java_version: [ 17, 21 ]
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
 
       # Adapted from https://github.com/actions/cache/blob/v3/examples.md#java---maven
@@ -112,6 +117,9 @@ jobs:
       - name: Build with Maven
         run: ./mvnw verify --file pom.xml -Pcoverage
       - name: Upload coverage report
+        # Only runs for Java 17 (officially supported). Also, no need to
+        # upload code coverage twice.
+        if: ${{ matrix.java_version == '17' }}
         uses: codecov/codecov-action@v3
         with:
           file: ./test/jte-test-report/target/site/jacoco-aggregate/jacoco.xml
