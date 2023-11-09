@@ -25,7 +25,7 @@ tasks.test {
 }
 
 // See docs here:
-// https://docs.gradle.org/8.0.1/userguide/toolchains.html#sec:consuming
+// https://docs.gradle.org/8.4/userguide/toolchains.html#sec:consuming
 // According to Kotlin Gradle Plugin docs:
 // https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
 // > You can set a toolchain via the java extension, and Kotlin compilation tasks will use it
