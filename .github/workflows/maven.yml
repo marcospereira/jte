@@ -75,7 +75,7 @@ jobs:
         if: failure() && steps.gradlePluginTests.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
-          name: failing-test-report
+          name: failing-test-report-${{ matrix.os }}-java-${{ matrix.java_version }}
           path: test/gradle-test-wrapper/build/reports/tests/test/**/*
 
 
