@@ -39,3 +39,9 @@ sourceSets.main.resources.srcDir(tasks.generateJte.targetResourceDirectory)
 tasks.compileJava {
     dependsOn(tasks.generateJte)
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

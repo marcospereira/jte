@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
     id("gg.jte.gradle").version("3.1.5-SNAPSHOT")
@@ -29,4 +28,10 @@ tasks.jar {
     from(fileTree("jte-classes") {
         include("**/*.class")
     })
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }

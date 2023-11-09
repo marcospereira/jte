@@ -35,3 +35,9 @@ tasks.precompileJte {
 tasks.test {
     dependsOn(tasks.precompileJte)
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
