@@ -19,9 +19,11 @@ dependencies {
     implementation("gg.jte:jte-runtime:3.1.5-SNAPSHOT")
 }
 
+val javaLanguageVersion = System.getProperty("gradle.matrix.java_version", "17")
+
 jte {
     precompile()
-    kotlinCompileArgs.set(arrayOf("-jvm-target", "17"))
+    kotlinCompileArgs.set(arrayOf("-jvm-target", javaLanguageVersion))
 }
 
 tasks.jar {
@@ -38,6 +40,6 @@ tasks.jar {
 // > You can set a toolchain via the java extension, and Kotlin compilation tasks will use it
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(System.getProperty("gradle.matrix.java_version", "17").toInt()))
+        languageVersion.set(JavaLanguageVersion.of(javaLanguageVersion.toInt()))
     }
 }
