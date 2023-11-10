@@ -15,7 +15,7 @@ tasks.test {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.10.1")
     implementation("gg.jte:jte-runtime:3.1.5-SNAPSHOT")
 }
 
