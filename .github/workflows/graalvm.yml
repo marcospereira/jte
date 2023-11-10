@@ -69,5 +69,5 @@ jobs:
       - name: Test Gradle Plugin Generate with conventions
         run: |
           cd test/jte-runtime-cp-test-gradle-convention
-          ./gradlew check nativeTest
+          ./gradlew -Dgradle.matrix.java_version=${{ matrix.java_version }} check nativeTest
           ./gradlew --stop

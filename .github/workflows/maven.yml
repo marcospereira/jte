@@ -69,7 +69,7 @@ jobs:
         id: gradlePluginTests
         run: |
           cd test/gradle-test-wrapper
-          ./gradlew check
+          ./gradlew -Dgradle.matrix.java_version=${{ matrix.java_version }} check
           ./gradlew --stop
       - name: Store Gradle plugin test reports
         if: failure() && steps.gradlePluginTests.outcome == 'failure'

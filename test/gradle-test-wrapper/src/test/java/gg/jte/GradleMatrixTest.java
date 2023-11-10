@@ -12,18 +12,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class GradleMatrixTest {
+    private static final String JAVA_VERSION_PROPERTY = "gradle.matrix.java_version";
     public static final List<String> GRADLE_VERSIONS = getTestGradleVersions();
     public static final String DEFAULT = "DEFAULT";
 
     /**
      * Use system property "gradle.matrix.versions" to test multiple versions. Note this may result in downloading those
      * versions if they are not already present.
-     * @return
      */
     private static List<String> getTestGradleVersions() {
         String versionProperty = System.getProperty("gradle.matrix.versions", DEFAULT);
@@ -41,10 +43,17 @@ public class GradleMatrixTest {
     @ParameterizedTest
     @MethodSource
     public void runGradleBuild(Path projectDir, String gradleVersion) {
+        List<String> arguments = new ArrayList<>();
+        arguments.add("--configuration-cache");
+        arguments.add(TASK_NAME);
+
+        Optional.ofNullable(System.getProperty(JAVA_VERSION_PROPERTY))
+                .ifPresent(javaVersion -> arguments.add("-D" + JAVA_VERSION_PROPERTY + "=" + javaVersion));
+
         GradleRunner runner = GradleRunner.create()
                 .withProjectDir(projectDir.toFile())
                 .withTestKitDir(Paths.get("build").resolve(projectDir.getFileName()).toAbsolutePath().toFile())
-                .withArguments("--configuration-cache", TASK_NAME);
+                .withArguments(arguments);
 
         if (!DEFAULT.equals(gradleVersion)) {
             runner = runner.withGradleVersion(gradleVersion);

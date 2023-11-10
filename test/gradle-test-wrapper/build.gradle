@@ -15,4 +15,5 @@ dependencies {
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
     systemProperty("gradle.matrix.versions", System.getProperty("gradle.matrix.versions", "DEFAULT"))
+    systemProperty("gradle.matrix.java_version", System.getProperty("gradle.matrix.java_version", "17"))
 }

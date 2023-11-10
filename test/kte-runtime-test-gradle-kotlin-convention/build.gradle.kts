@@ -38,6 +38,6 @@ tasks.jar {
 // > You can set a toolchain via the java extension, and Kotlin compilation tasks will use it
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(System.getProperty("gradle.matrix.java_version", "17").toInt()))
     }
 }

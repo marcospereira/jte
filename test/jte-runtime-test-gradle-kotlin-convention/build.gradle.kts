@@ -32,6 +32,6 @@ tasks.jar {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(System.getProperty("gradle.matrix.java_version", "17").toInt()))
     }
 }
