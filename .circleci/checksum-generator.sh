@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+uname -a
+echo "$OSTYPE"
+
 CHECKSUM_FILE="/tmp/checksum.txt"
 
 find . -name "pom.xml" -print0 | while read -d $'\0' file; do
