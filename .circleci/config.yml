@@ -1,10 +1,21 @@
 version: 2.1
 
+executors:
+  linux:
+    machine:
+      image: ubuntu-2204:current
+  macos:
+    macos:
+      xcode: 16.1.0
+
 jobs:
 
   build:
-    docker:
-      - image: cimg/openjdk:17.0
+    parameters:
+      os:
+        type: executor
+
+    executor: << parameters.os >>
 
     steps:
       - checkout
@@ -50,4 +61,7 @@ jobs:
 workflows:
   build-workflow:
     jobs:
-      - build
+      - build:
+          matrix:
+            parameters:
+              os: [linux, macos]
