@@ -4,10 +4,6 @@ executors:
   linux:
     machine:
       image: ubuntu-2204:current
-  windows:
-    resource_class: 'windows.medium'
-    machine:
-      image: windows-server-2022-gui:current
   macos:
     macos:
       xcode: 16.1.0
@@ -68,4 +64,4 @@ workflows:
       - build:
           matrix:
             parameters:
-              os: [linux, macos, windows]
+              os: [linux, macos]
