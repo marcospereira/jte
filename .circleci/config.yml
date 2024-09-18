@@ -8,6 +8,16 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+         name: Generate cache checksum file
+         command: .circleci/checksum-generator.sh
+
+      - restore_cache:
+          keys:
+            - &maven-cache-key maven-cache-v1-{{ checksum "/tmp/checksum.txt" }}
+            - maven-cache-v1
+
       - run:
           name: Make Maven Wrapper executable
           command: chmod +x ./mvnw
@@ -29,6 +39,11 @@ jobs:
           name: Clean local artifacts
           # if: contains(matrix.os, 'win') == false
           command: rm -rvf ~/.m2/repository/gg/jte
+
+      - save_cache:
+          key: *maven-cache-key
+          paths:
+            - ~/.m2
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
