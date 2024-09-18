@@ -15,9 +15,24 @@ jobs:
       - run:
           name: Make Maven Wrapper executable
           command: chmod +x ./mvnw
+          # if: contains(matrix.os, 'win') == false
       - run:
           name: Build with Maven
           command: ./mvnw install --file pom.xml
+      - run:
+          name: Build Gradle Plugin
+          command: cd jte-gradle-plugin && ./gradlew publishToMavenLocal
+      - run:
+          name: Run all the Gradle Plugin tests
+          command: cd test/gradle-test-wrapper && ./gradlew --info check
+      - run:
+          name: Stop Gradle Daemon
+          # if: ${{ always() }}
+          command: cd test/gradle-test-wrapper && ./gradlew --stop
+      - run:
+          name: Clean local artifacts
+          # if: contains(matrix.os, 'win') == false
+          command: rm -rvf ~/.m2/repository/gg/jte
 
   say-hello:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
