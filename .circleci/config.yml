@@ -8,60 +8,134 @@ executors:
     macos:
       xcode: 16.1.0
 
-jobs:
-
-  build:
-    parameters:
-      os:
-        type: executor
-
-    executor: << parameters.os >>
-
+commands:
+  install-sdkman:
     steps:
-      - checkout
+      - run:
+          name: Install SDKMAN
+          command: |
+            curl -s "https://get.sdkman.io" | bash
+            source "$HOME/.sdkman/bin/sdkman-init.sh"
+            sdk version
 
+  install-java:
+    parameters:
+      version:
+        type: string
+    steps:
+      - restore_cache:
+          keys:
+            - &sdkman-cache-key sdkman-cache-v1
+      - run:
+          name: Install JDK << parameters.version >>
+          command: |
+            sdk install java << parameters.version >>
+            java -version
+      - save_cache:
+          key: *sdkman-cache-key
+          paths:
+            - ~/.sdkman/candidates
+
+  generate-checksum-file:
+    steps:
       - run:
          name: Generate cache checksum file
          command: .circleci/checksum-generator.sh
 
-      - restore_cache:
-          keys:
-            - &maven-cache-key maven-cache-v1-{{ checksum "/tmp/checksum.txt" }}
-            - maven-cache-v1
-
-      - run:
-          name: Make Maven Wrapper executable
-          command: chmod +x ./mvnw
-          # if: contains(matrix.os, 'win') == false
+  build-maven:
+    steps:
       - run:
           name: Build with Maven
           command: ./mvnw install --file pom.xml
+
+  build-gradle-plugin:
+    steps:
       - run:
           name: Build Gradle Plugin
           command: cd jte-gradle-plugin && ./gradlew publishToMavenLocal
-      - run:
-          name: Run all the Gradle Plugin tests
-          command: cd test/gradle-test-wrapper && ./gradlew --info check
+
+  stop-gradle-daemon:
+    steps:
       - run:
           name: Stop Gradle Daemon
           # if: ${{ always() }}
           command: cd test/gradle-test-wrapper && ./gradlew --stop
+
+  clean-local-artifacts:
+    steps:
       - run:
           name: Clean local artifacts
           # if: contains(matrix.os, 'win') == false
           command: rm -rvf ~/.m2/repository/gg/jte
 
+jobs:
+  build:
+    parameters:
+      os:
+        type: executor
+      java-version:
+        type: string
+        default: 17.0.12-tem
+
+    executor: << parameters.os >>
+
+    steps:
+      - checkout
+      - install-sdkman
+      - install-java:
+          version: << parameters.java-version >>
+      - generate-checksum-file
+      - restore_cache:
+          keys:
+            - &maven-cache-key maven-cache-v1-{{ checksum "/tmp/checksum.txt" }}
+            - maven-cache-v1
+      - build-maven
+      - build-gradle-plugin
+      - run:
+          name: Run all the Gradle Plugin tests
+          command: cd test/gradle-test-wrapper && ./gradlew --info check
+      - stop-gradle-daemon
+      - clean-local-artifacts
       - save_cache:
           key: *maven-cache-key
           paths:
             - ~/.m2
 
+  native-build:
+    parameters:
+      os:
+        type: executor
+      java-version:
+        type: string
+        default: 17.0.12-tem
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - install-sdkman
+      - install-java:
+          version: << parameters.java-version >>
+      - generate-checksum-file
+      - restore_cache:
+          keys:
+            - &maven-cache-key maven-cache-v1-{{ checksum "/tmp/checksum.txt" }}
+            - maven-cache-v1
+      - build-maven
+
+
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  build-workflow:
+  test-native-builds:
+    jobs:
+      - native-build:
+          matrix:
+            parameters:
+              os: [linux, macos]
+              java-version: [21.0.4-tem, 17.0.12-tem]
+  maven:
     jobs:
       - build:
           matrix:
             parameters:
               os: [linux, macos]
+              java-version: [21.0.4-tem, 17.0.12-tem]
