@@ -145,3 +145,13 @@ workflows:
             parameters:
               os: [linux, macos]
               java-version: [21.0.4-tem, 17.0.12-tem]
+
+  build-and-approve:
+    jobs:
+      - build:
+          os: linux
+          java-version: 17.0.12-tem
+      - hold:
+          type: approval
+          requires:
+            - build
