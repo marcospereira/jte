@@ -15,7 +15,7 @@ commands:
           name: Install SDKMAN
           command: |
             curl -s "https://get.sdkman.io" | bash
-            echo "sdkman_auto_answer=false" > ~/.sdkman/etc/config
+            echo "sdkman_auto_answer=true" > ~/.sdkman/etc/config
             echo "sdkman_auto_selfupdate=true" >> $HOME/.sdkman/etc/config
             source "$HOME/.sdkman/bin/sdkman-init.sh"
             sdk version
