@@ -24,6 +24,7 @@ commands:
         type: string
     steps:
       - restore_cache:
+          name: Restore SDKMAN cache
           keys:
             - &sdkman-cache-key sdkman-cache-v1
       - run:
@@ -32,6 +33,7 @@ commands:
             sdk install java << parameters.version >>
             java -version
       - save_cache:
+          name: Save SDKMAN cache
           key: *sdkman-cache-key
           paths:
             - ~/.sdkman/candidates
@@ -86,6 +88,7 @@ jobs:
           version: << parameters.java-version >>
       - generate-checksum-file
       - restore_cache:
+          name: Restore Maven cache
           keys:
             - &maven-cache-key maven-cache-v1-{{ checksum "/tmp/checksum.txt" }}
             - maven-cache-v1
@@ -97,6 +100,7 @@ jobs:
       - stop-gradle-daemon
       - clean-local-artifacts
       - save_cache:
+          name: Save Maven cache
           key: *maven-cache-key
           paths:
             - ~/.m2
