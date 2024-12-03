@@ -14,7 +14,7 @@
         <maven.deploy.skip>true</maven.deploy.skip>
         <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
         <jacoco.version>0.8.10</jacoco.version>
-        <kotlin.version>1.9.10</kotlin.version>
+        <kotlin.version>1.9.25</kotlin.version>
     </properties>
 
     <dependencies>
