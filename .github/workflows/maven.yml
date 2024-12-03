@@ -47,8 +47,6 @@ jobs:
         run: chmod +x ./mvnw
       - name: Build with Maven
         run: ./mvnw install --file pom.xml
-      - name: Test Kotlin 2.0
-        run: ./mvnw test --file pom.xml --projects jte-kotlin --also-make --activate-profiles kotlin-2.0
       - name: Build Gradle Plugin
         run: cd jte-gradle-plugin && ./gradlew publishToMavenLocal
       - name: Run all the Gradle Plugin tests
@@ -75,6 +73,24 @@ jobs:
         if: contains(matrix.os, 'win')
         run: rm -r -Force ~/.m2/repository/gg/jte
 
+  test-kotlin-versions:
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        kotlinProfile: [ "kotlin-2.0", "kotlin-2.1" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build with Maven
+        run: ./mvnw install --file pom.xml -DskipTests=true
+      - name: Test Kotlin Profile ${{ matrix.kotlinProfile }}
+        run: ./mvnw test --file pom.xml --projects jte-kotlin --also-make --activate-profiles ${{ matrix.kotlinProfile }}
 
   coverage:
     # Do not run coverage for forks since they cannot upload
