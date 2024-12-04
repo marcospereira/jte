@@ -80,7 +80,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kotlin-profile: [ "kotlin-2.0", "kotlin-2.1" ]
+        kotlin-profile: [ "kotlin-1.9", "kotlin-2.0", "kotlin-2.1" ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -93,7 +93,7 @@ jobs:
         if: contains(matrix.os, 'win') == false
         run: chmod +x ./mvnw
       - name: Build with Maven
-        run: ./mvnw install --file pom.xml -DskipTests=true
+        run: ./mvnw install --file pom.xml -DskipTests=true --activate-profiles ${{ matrix.kotlin-profile }}
       - name: Test Kotlin Profile ${{ matrix.kotlin-profile }}
         run: ./mvnw test --no-transfer-progress --file pom.xml --projects jte-kotlin --also-make --activate-profiles ${{ matrix.kotlin-profile }}
 
