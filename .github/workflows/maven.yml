@@ -9,8 +9,8 @@ on:
       - 'docs/**'
       - 'mkdocs.yml'
   push:
-    branches:
-      - main
+#    branches:
+#      - main
 
 jobs:
   build:
