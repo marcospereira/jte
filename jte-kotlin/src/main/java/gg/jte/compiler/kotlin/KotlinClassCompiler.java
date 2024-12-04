@@ -41,11 +41,10 @@ public class KotlinClassCompiler implements ClassCompiler {
         SimpleKotlinCompilerMessageCollector messageCollector = new SimpleKotlinCompilerMessageCollector(templateByClassName, config.packageName);
         ExitCode exitCode = compiler.exec(messageCollector, new Services.Builder().build(), compilerArguments);
 
-        if (exitCode != ExitCode.OK && exitCode != ExitCode.COMPILATION_ERROR) {
-            throw new TemplateException(messageCollector.getErrorMessage());
-        }
+        // It may be an internal error, or the compiler ran into an out-of-memory error
+        boolean compilerCrashed = exitCode != ExitCode.OK && exitCode != ExitCode.COMPILATION_ERROR;
 
-        if (messageCollector.hasErrors()) {
+        if (compilerCrashed || messageCollector.hasErrors()) {
             throw new TemplateException(messageCollector.getErrorMessage());
         }
     }
